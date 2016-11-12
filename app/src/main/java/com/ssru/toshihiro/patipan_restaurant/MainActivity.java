@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -36,8 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private String txtUser;
     private String txtPass;
 
-    private Button btnSignIn;
-    private Button btnSignUp;
+
 
 
     @Override
@@ -50,12 +48,14 @@ public class MainActivity extends AppCompatActivity {
         conectedSQLite();
 
         synAndDelete();
-
-        testAddValue();
-
-
-
         mySQLite = new MySQLite(this);
+
+        
+    }
+
+    public void clickSignUpinmain(View view) {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
     }
 
     public void clickSignInmain(View view) {
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void checkUser() {
         try {
             SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(MySQLiteOpenHelper.DATABASE_NAME, MODE_PRIVATE, null);
@@ -81,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 resultStrings[i] = cursor.getString(i);
             }
             cursor.close();
-
             if (txtPass.equals(resultStrings[2])){
                 Toast.makeText(MainActivity.this, "ยินดีต้อนรับ", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, ShowProduct.class);
@@ -89,19 +89,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-
         } catch (Exception e) {
             MyAlert myAlert = new MyAlert();
             myAlert.myDialog(this, "ไม่มี user ", "ไม่มี " + txtUser + " ในฐานข้อมูล");
-
         }
     }
-
     private void binWidget() {
         edtUser = (EditText) findViewById(R.id.edtUser);
         edtPass = (EditText) findViewById(R.id.edtPass);
-
-
+        
     }
 
     private void synAndDelete() {
