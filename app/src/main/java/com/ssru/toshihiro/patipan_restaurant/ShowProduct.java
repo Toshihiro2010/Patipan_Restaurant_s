@@ -1,37 +1,28 @@
 package com.ssru.toshihiro.patipan_restaurant;
-import android.os.AsyncTask;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-
 import android.widget.ListView;
 
 import com.squareup.okhttp.OkHttpClient;
-
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-
 import org.json.JSONArray;
-
 import org.json.JSONObject;
-
-
 
 public class ShowProduct extends AppCompatActivity {
 
-    private ListView listView;
-
-
+    private ListView listProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_product);
+
         bindWidget();
-
-
 
         SynJSON synJSON = new SynJSON();
         synJSON.execute();
@@ -39,12 +30,11 @@ public class ShowProduct extends AppCompatActivity {
 
     }
 
-
-
     private void bindWidget() {
-        listView = (ListView) findViewById(R.id.listProduct);
-        Log.d("Widget", "bind Widget");
+        listProduct = (ListView) findViewById(R.id.listProduct);
     }//Bind Widget
+
+
 
     private class SynJSON extends AsyncTask<Void , Void ,String>{
 
@@ -65,45 +55,38 @@ public class ShowProduct extends AppCompatActivity {
             }
 
             return null;
+
         }//do Inback
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
             try {
-                Log.d("23/11/59", "Suces Onpost ==> " + s);
-
+                Log.d("23/11/59", "SucesOnpost ==> " + s);
                 JSONArray jsonArray = new JSONArray(s);
-
 
                 String[] iconString = new String[jsonArray.length()];
                 String[] titleString = new String[jsonArray.length()];
                 String[] priceString = new String[jsonArray.length()];
 
-
-
                 for (int i = 0; i < jsonArray.length(); i++) {
-
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     iconString[i] = jsonObject.getString("Source");
                     titleString[i] = jsonObject.getString("Food");
                     priceString[i] = jsonObject.getString("Price");
                 }
 
-
                 ProductAdapter productAdapter = new ProductAdapter(ShowProduct.this,iconString,titleString,priceString);
-                listView.setAdapter(productAdapter);
+                listProduct.setAdapter(productAdapter);
 
 
 
             } catch (Exception e) {
                 Log.d("23/11/59", "onPost ==> " + e.toString());
             }
-        }//Post
 
+        }//onPost
 
     }//SynJson
-
 
 }//Main class
